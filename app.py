@@ -67,7 +67,6 @@ arquivo_escolhido = st.selectbox(
 # Se seu CSV usa ; como separador, troque sep=";" abaixo.
 df_raw = pd.read_csv(arquivo_escolhido)
 
-st.subheader("Prévia do CSV (bruto)")
 st.dataframe(df_raw.head(30), use_container_width=True)
 
 try:
