@@ -67,18 +67,14 @@ arquivo_escolhido = st.selectbox(
 # Se seu CSV usa ; como separador, troque sep=";" abaixo.
 df_raw = pd.read_csv(arquivo_escolhido)
 
-st.dataframe(df_raw.head(30), use_container_width=True)
-
+with st.expander("Visualizar dados brutos"):
+    st.dataframe(df_raw.head(30), use_container_width=True)
 try:
     df_model = limpar_df(df_raw)
 except Exception as e:
     st.error(f"Erro ao limpar/selecionar colunas: {e}")
     st.info('Confirme se o CSV tem as colunas: "VEICULO", "KM RODADA", "DIESEL".')
     st.stop()
-
-st.subheader("Dados após limpeza")
-st.write(f"Linhas: {df_model.shape[0]} | Colunas: {df_model.shape[1]}")
-st.dataframe(df_model.head(30), use_container_width=True)
 
 st.subheader("Filtros")
 veiculo_sel = st.selectbox("Veículo", sorted(df_model["VEICULO"].unique().tolist()))
@@ -87,7 +83,7 @@ mostrar_n = st.slider("Mostrar últimos N registros", 10, 300, 60)
 df_v = df_model[df_model["VEICULO"] == veiculo_sel].tail(mostrar_n)
 
 st.subheader(f"Consumo do veículo: {veiculo_sel}")
-fig = plt.figure()
+fig = plt.figure(figsize=(8, 2))
 plt.scatter(df_v["KM RODADA"], df_v["DIESEL"])
 plt.xlabel("KM RODADA")
 plt.ylabel("DIESEL (litros)")
